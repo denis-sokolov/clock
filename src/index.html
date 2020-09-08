@@ -32,11 +32,35 @@
     margin-bottom: 50px;
   }
 
+  .above-the-fold {
+    min-height: 100vh;
+  }
+
+  .current-long-events {
+    margin-bottom: 40px;
+  }
+
   .clock {
     font-size: 40px;
+    margin-top: 20px;
+  }
+
+  .event .title {
+  }
+
+  .event .time {
+    font-size: 50%;
+    margin-left: 1em;
   }
 </style>
 
 <div class="layout">
-  <div class="clock"></div>
+  <div class="above-the-fold">
+    <div class="current-long-events"></div>
+    <div class="current-events"></div>
+    <div class="clock"></div>
+    <button data-logged-out class="add-calendar">Add calendar</button>
+    <div class="next-events"></div>
+  </div>
+  <button data-logged-in class="logout">Logout</button>
 </div>
