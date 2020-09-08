@@ -10,18 +10,37 @@ export type Event = {
 export const longDuration = ms("3h");
 export const soonDuration = ms("1h");
 
-export function eventsByTime(
+export function filterEvents(
   events: Event[],
   opts: {
-    startAfter?: number;
-    startBefore?: number;
+    end?: {
+      after?: number;
+      before?: number;
+      includeEmpty?: boolean;
+    };
+    start?: {
+      after?: number;
+      before?: number;
+      includeEmpty?: boolean;
+    };
   }
 ) {
-  const { startAfter, startBefore } = opts;
+  const { end, start } = opts;
+
+  function passesRule(
+    time: Event["start"],
+    rule: typeof opts["start"]
+  ): boolean {
+    if (!rule) return true;
+    if (time === "none") return Boolean(rule.includeEmpty);
+    if (rule.after && time < rule.after) return false;
+    if (rule.before && rule.before <= time) return false;
+    return true;
+  }
+
   return events.filter((e) => {
-    if (e.start === "none") return !!startAfter;
-    if (startAfter && e.start < startAfter) return false;
-    if (startBefore && startBefore <= e.start) return false;
+    if (!passesRule(e.start, start)) return false;
+    if (!passesRule(e.end, end)) return false;
     return true;
   });
 }

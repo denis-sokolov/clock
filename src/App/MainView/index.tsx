@@ -1,5 +1,5 @@
 import React from "react";
-import { Calendar, eventsByTime } from "src/model";
+import { Calendar, filterEvents } from "src/model";
 import { wordyClock } from "./wordyClock";
 import { Events } from "./Events";
 
@@ -33,8 +33,8 @@ export function MainView(props: Props) {
         {calendar.events !== "loading" && (
           <div className="current-events">
             <Events
-              events={eventsByTime(calendar.events, {
-                startBefore: now,
+              events={filterEvents(calendar.events, {
+                start: { before: now },
               })}
               now={now}
             />
@@ -45,8 +45,8 @@ export function MainView(props: Props) {
         {calendar.events !== "loading" && (
           <div className="next-events">
             <Events
-              events={eventsByTime(calendar.events, {
-                startAfter: now,
+              events={filterEvents(calendar.events, {
+                start: { after: now },
               })}
               now={now}
               spacing={{
