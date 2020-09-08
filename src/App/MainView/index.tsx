@@ -1,3 +1,4 @@
+import ms from "ms";
 import React from "react";
 import { Calendar, filterEvents } from "src/model";
 import { wordyClock } from "./wordyClock";
@@ -35,6 +36,7 @@ export function MainView(props: Props) {
             <Events
               events={filterEvents(calendar.events, {
                 start: { before: now },
+                end: { after: now, includeEmpty: true },
               })}
               now={now}
             />
