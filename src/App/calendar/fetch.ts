@@ -18,12 +18,16 @@ export async function fetchEvents(gapi: typeof window.gapi) {
           })
         ).result.items.map(
           (event): Event => {
-            const start = Date.parse(
-              event.start.dateTime || event.start.date || "1970-01-01"
-            );
-            const end = Date.parse(
-              event.end.dateTime || event.end.date || "1970-01-01"
-            );
+            const start = event.start.dateTime
+              ? Date.parse(event.start.dateTime)
+              : event.start.date
+              ? Date.parse(`${event.start.date}T00:00:00`)
+              : "none";
+            const end = event.end.dateTime
+              ? Date.parse(event.end.dateTime)
+              : event.end.date
+              ? Date.parse(`${event.end.date}T23:59:59`)
+              : "none";
             return {
               color: calendar.backgroundColor || "white",
               start,
