@@ -2,13 +2,14 @@ const path = require("path");
 
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const isProduction = process.env.NODE_ENV === "production";
 if (!isDevelopment && !isProduction) throw new Error("Unexpected NODE_ENV");
 
 module.exports = {
-  entry: "./src/index.ts",
+  entry: "./src/index.tsx",
   mode: isDevelopment ? "development" : "production",
   module: {
     rules: [
@@ -32,6 +33,7 @@ module.exports = {
   ],
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
+    plugins: [new TsconfigPathsPlugin()],
   },
   output: {
     filename: "index.js",

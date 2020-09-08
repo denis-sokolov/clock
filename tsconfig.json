@@ -4,6 +4,7 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "jsx": "react",
     "isolatedModules": true,
     "lib": ["dom", "dom.iterable", "ES2019"],
     "module": "es2015",

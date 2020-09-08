@@ -29,8 +29,6 @@
   .layout {
     margin: 80px auto;
     max-width: 500px;
-    opacity: 0;
-    transition: opacity 150ms;
   }
   .layout > * {
     margin-bottom: 50px;
@@ -40,16 +38,9 @@
     min-height: 100vh;
   }
 
-  .current-long-events {
-    margin-bottom: 40px;
-  }
-
   .clock {
     font-size: 40px;
     margin-top: 20px;
-  }
-
-  .event .title {
   }
 
   .event .time {
@@ -58,13 +49,4 @@
   }
 </style>
 
-<div class="layout">
-  <div class="above-the-fold">
-    <div class="current-long-events"></div>
-    <div class="current-events"></div>
-    <div class="clock"></div>
-    <button data-logged-out class="add-calendar">Add calendar</button>
-    <div class="next-events"></div>
-  </div>
-  <button data-logged-in class="logout">Logout</button>
-</div>
+<div class="app" />
