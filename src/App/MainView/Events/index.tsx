@@ -2,6 +2,7 @@ import React from "react";
 import ms from "ms";
 import { clean, Event } from "src/model";
 import { EventRow } from "./EventRow";
+import { Interval } from "./Interval";
 
 type Props = {
   events: Event[];
@@ -41,23 +42,16 @@ export function Events(props: Props) {
           throw new Error(
             "Did not expect to render an event with not start date"
           );
-        const pauseSinceStart = Math.min(
-          ms("5h"),
-          Math.max(0, ourStart - prevEnd)
-        );
+
         return (
-          <div
-            key={event.start + event.title}
-            style={{ paddingTop: msToPx(pauseSinceStart) }}
-          >
+          <div key={event.start + event.title}>
+            {event.start !== "none" && (
+              <Interval start={prevEnd} end={event.start} />
+            )}
             <EventRow event={event} now={now} />
           </div>
         );
       })}
     </div>
   );
-}
-
-function msToPx(ms: number) {
-  return ms / 36000;
 }
