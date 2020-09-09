@@ -5,7 +5,7 @@ import { EventRow } from "./EventRow";
 
 type Props = {
   events: Event[];
-  spacing?: boolean | { start?: number; end?: number };
+  spacing?: boolean | { start?: number };
   now: number;
 };
 
@@ -27,14 +27,7 @@ export function Events(props: Props) {
   const start = spacing.start || events[0]?.start;
 
   return (
-    <div
-      style={{
-        minHeight:
-          spacing.start && spacing.end
-            ? msToPx(spacing.end - spacing.start)
-            : 0,
-      }}
-    >
+    <div>
       {events.map(function (event, i) {
         const prevEnd = i === 0 ? start : events[i - 1].end;
         const ourStart = event.start;
