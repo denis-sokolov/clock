@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Calendar, filterEvents } from "src/model";
 import { wordyClock } from "./wordyClock";
 import { Events } from "./Events";
@@ -14,7 +14,11 @@ export function MainView(props: Props) {
   const hour = new Date(now).getHours();
   const minute = new Date(now).getMinutes();
 
-  const clock = <div className="clock">{wordyClock(seed, hour, minute)}</div>;
+  const clockText = wordyClock(seed, hour, minute);
+  useEffect(function () {
+    document.title = clockText;
+  });
+  const clock = <div className="clock">{clockText}</div>;
 
   if (calendar === "not-inited") return null;
   if (calendar.auth === "logged-out")
