@@ -1,5 +1,4 @@
 import React from "react";
-import ms from "ms";
 import { clean, Event } from "src/model";
 import { EventRow } from "./EventRow";
 import { Interval } from "./Interval";

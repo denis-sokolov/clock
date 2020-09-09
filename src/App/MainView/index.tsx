@@ -1,4 +1,3 @@
-import ms from "ms";
 import React from "react";
 import { Calendar, filterEvents } from "src/model";
 import { wordyClock } from "./wordyClock";
