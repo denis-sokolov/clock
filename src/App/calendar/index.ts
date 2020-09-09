@@ -1,3 +1,4 @@
+import ms from "ms";
 import { useState } from "react";
 import { useRerender } from "@theorem/react";
 import { Calendar, Event } from "src/model";
@@ -33,9 +34,13 @@ export function useCalendar(): Calendar {
 
       if (auth === "logged-in") {
         setEvents("loading");
-        const events = await fetchEvents(window.gapi);
-        if (cancelled) return;
-        setEvents(events);
+        async function fetch() {
+          const events = await fetchEvents(window.gapi);
+          if (cancelled) return;
+          setEvents(events);
+          setTimeout(fetch, ms("10m"));
+        }
+        fetch();
       }
     },
     [auth]
