@@ -27,12 +27,15 @@ export function EventRow(props: Props) {
   const fontSize =
     minSize +
     (maxSize - minSize) * (1 - clamp(0, 1, distanceInMs / soonDuration));
+  const timeFontSize = clamp(14, maxSize, fontSize / 2);
 
   return (
     <div className="event" style={{ color, fontSize }}>
       <span className="title">{event.title}</span>
       {distanceInMs <= soonDuration && (
-        <span className="time">{Math.ceil(distanceInMs / ms("1m")) + "m"}</span>
+        <span className="time" style={{ fontSize: timeFontSize }}>
+          {Math.ceil(distanceInMs / ms("1m")) + "m"}
+        </span>
       )}
     </div>
   );
