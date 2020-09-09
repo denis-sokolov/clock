@@ -25,7 +25,7 @@ export function useCalendar(): Calendar {
   }, []);
 
   useAsyncEffect(
-    async function () {
+    async function ({ cancelled }) {
       if (auth === "logged-out") {
         setEvents("no-auth");
         return;
@@ -34,7 +34,8 @@ export function useCalendar(): Calendar {
       if (auth === "logged-in") {
         setEvents("loading");
         const events = await fetchEvents(window.gapi);
-        if (auth === "logged-in") setEvents(events);
+        if (cancelled) return;
+        setEvents(events);
       }
     },
     [auth]
