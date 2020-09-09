@@ -1,3 +1,4 @@
+import ms from "ms";
 import { Event } from "src/model";
 
 export async function fetchEvents(gapi: typeof window.gapi) {
@@ -11,7 +12,7 @@ export async function fetchEvents(gapi: typeof window.gapi) {
           await gapi.client.calendar.events.list({
             calendarId: calendar.id,
             timeMin: new Date().toISOString(),
-            timeMax: new Date(Date.now() + 172800000).toISOString(),
+            timeMax: new Date(Date.now() + ms("5d")).toISOString(),
             showDeleted: false,
             singleEvents: true,
             orderBy: "startTime",
