@@ -20,6 +20,7 @@ export function Interval(props: Props) {
         flexDirection: "column",
         justifyContent: "center",
         height,
+        transition: "height 1s",
       }}
     />
   );
