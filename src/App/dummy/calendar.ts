@@ -33,6 +33,7 @@ export function dummyCalendar(): Calendar {
       event("Forever", "none-none"),
       event("Bring your child to work day", "yesterday-none"),
       event("Breakfast at Tiffany’s", "10:00-11:00"),
+      event("Rest", "11:00-11:20"),
       event("Lunch", "13:00-13:25"),
       event("Dinner", "19:00-20:30"),
       event("Dinner notes", "19:05-19:05"),
