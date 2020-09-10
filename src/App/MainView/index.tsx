@@ -18,7 +18,11 @@ export function MainView(props: Props) {
 
   const clockText = wordyClock(seed, hour, minute);
   useEffect(function () {
-    document.title = clockText;
+    const isApp =
+      (window.navigator as any).standalone ||
+      window.matchMedia("(display-mode: standalone)").matches;
+    // The app view does not benefit from the display in the tab title instead it duplicates the content
+    document.title = isApp ? "" : clockText;
   });
   const clock = <div className="clock">{clockText}</div>;
 
