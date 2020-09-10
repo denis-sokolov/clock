@@ -18,6 +18,7 @@ function event(title: string, time: string): Event {
     return { start: parse(mRoot[1]), end: parse(mRoot[2]) };
   })();
   return {
+    calendarId: "1",
     color: "green",
     end,
     start,

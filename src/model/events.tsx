@@ -1,6 +1,7 @@
 import ms from "ms";
 
 export type Event = {
+  calendarId: string;
   color: string;
   end: number | "none";
   start: number | "none";

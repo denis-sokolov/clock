@@ -30,6 +30,7 @@ export async function fetchEvents(gapi: typeof window.gapi) {
               ? Date.parse(`${event.end.date}T23:59:59`)
               : "none";
             return {
+              calendarId: calendar.id,
               color: calendar.backgroundColor || "white",
               start,
               end,
