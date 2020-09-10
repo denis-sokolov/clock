@@ -1,5 +1,6 @@
 import React from "react";
 import { clean, Event } from "src/model";
+import { useHiddenCalendars } from "src/userSettings";
 import { EventRow } from "./EventRow";
 import { Interval } from "./Interval";
 
@@ -11,6 +12,7 @@ type Props = {
 
 export function Events(props: Props) {
   const { now } = props;
+  const { isCalendarHidden } = useHiddenCalendars();
 
   const events = clean(props.events);
   const spacing = props.spacing === true ? {} : props.spacing;
@@ -47,7 +49,9 @@ export function Events(props: Props) {
             {event.start !== "none" && (
               <Interval start={prevEnd} end={event.start} />
             )}
-            <EventRow event={event} now={now} />
+            {!isCalendarHidden(event.calendarId) && (
+              <EventRow event={event} now={now} />
+            )}
           </div>
         );
       })}

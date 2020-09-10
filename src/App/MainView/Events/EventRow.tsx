@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import ms from "ms";
+import { Popover } from "react-tiny-popover";
 import { color as makeColor } from "@theorem/react";
 import { soonDuration, Event } from "src/model";
+import { useHiddenCalendars } from "src/userSettings";
 
 type Props = {
   event: Event;
@@ -13,6 +15,9 @@ const clamp = (min: number, max: number, num: number) =>
 
 export function EventRow(props: Props) {
   const { event, now } = props;
+  const [menuVisible, setMenuVisible] = useState(false);
+  const { hideCalendar } = useHiddenCalendars();
+
   const startDistance =
     event.start === "none" ? Infinity : Math.abs(now - event.start);
   const endDistance =
@@ -46,10 +51,29 @@ export function EventRow(props: Props) {
     upcoming && startDistance <= soonDuration
       ? Math.ceil(startDistance / ms("1m"))
       : undefined;
-
   return (
     <div className="event" style={{ color, fontSize }}>
-      <span className="title">{event.title}</span>
+      <Popover
+        content={
+          <div className="actions">
+            <button
+              onClick={() => {
+                setMenuVisible(false);
+                hideCalendar(event.calendarId);
+              }}
+            >
+              Hide calendar
+            </button>
+          </div>
+        }
+        isOpen={menuVisible}
+        onClickOutside={() => setMenuVisible(false)}
+        {...{ transitionDuration: 0 }}
+      >
+        <button className="title" onClick={() => setMenuVisible(true)}>
+          {event.title}
+        </button>
+      </Popover>
       {nMoreMins && (
         <span className="time" style={{ fontSize: timeFontSize }}>
           {nMoreMins} more {nMoreMins === 1 ? "minute" : "minutes"}

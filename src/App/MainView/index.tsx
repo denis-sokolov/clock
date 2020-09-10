@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Calendar, filterEvents } from "src/model";
+import { useHiddenCalendars } from "src/userSettings";
 import { wordyClock } from "./wordyClock";
 import { Events } from "./Events";
 
@@ -11,6 +12,7 @@ type Props = {
 
 export function MainView(props: Props) {
   const { calendar, now, seed } = props;
+  const { restoreHiddenCalendars, someCalendarsHidden } = useHiddenCalendars();
   const hour = new Date(now).getHours();
   const minute = new Date(now).getMinutes();
 
@@ -64,6 +66,9 @@ export function MainView(props: Props) {
       <button className="logout" onClick={calendar.logout}>
         Logout
       </button>
+      {someCalendarsHidden() && (
+        <button onClick={restoreHiddenCalendars}>Unhide calendars</button>
+      )}
     </div>
   );
 }
