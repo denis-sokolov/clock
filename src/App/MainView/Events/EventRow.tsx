@@ -3,7 +3,7 @@ import ms from "ms";
 import { Popover } from "react-tiny-popover";
 import { color as makeColor } from "@theorem/react";
 import { soonDuration, Event } from "src/model";
-import { useHiddenCalendars } from "src/userSettings";
+import { useDimmedCalendars, useHiddenCalendars } from "src/userSettings";
 
 type Props = {
   event: Event;
@@ -16,6 +16,7 @@ const clamp = (min: number, max: number, num: number) =>
 export function EventRow(props: Props) {
   const { event, now } = props;
   const [menuVisible, setMenuVisible] = useState(false);
+  const { dimCalendar, isCalendarDimmed, undimCalendar } = useDimmedCalendars();
   const { hideCalendar } = useHiddenCalendars();
 
   const startDistance =
@@ -52,10 +53,25 @@ export function EventRow(props: Props) {
       ? Math.ceil(startDistance / ms("1m"))
       : undefined;
   return (
-    <div className="event" style={{ color, fontSize }}>
+    <div
+      className={`event ${isCalendarDimmed(event.calendarId) ? "dimmed" : ""}`}
+      style={{ color, fontSize }}
+    >
       <Popover
         content={
           <div className="actions">
+            <button
+              onClick={() => {
+                setMenuVisible(false);
+                isCalendarDimmed(event.calendarId)
+                  ? undimCalendar(event.calendarId)
+                  : dimCalendar(event.calendarId);
+              }}
+            >
+              {isCalendarDimmed(event.calendarId)
+                ? "Undim calendar"
+                : "Dim calendar"}
+            </button>
             <button
               onClick={() => {
                 setMenuVisible(false);
