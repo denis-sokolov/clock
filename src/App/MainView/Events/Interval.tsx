@@ -11,7 +11,7 @@ export function Interval(props: Props) {
   const { end, start } = props;
 
   const duration = Math.max(0, end - start);
-  const height = Math.min(msToPx(ms("5h")), msToPx(duration));
+  const height = Math.min(msToPx(ms("10h")), msToPx(duration));
 
   return (
     <div
