@@ -31,30 +31,30 @@ export function Events(props: Props) {
 
   return (
     <div>
-      {events.map(function (event, i) {
-        const prevEnd = max(
-          events
-            .slice(0, i)
-            .map((e) => (e.end === "none" ? 0 : e.end))
-            .concat([start === "none" ? 0 : start])
-        );
-        const ourStart = event.start;
-        if (ourStart === "none")
-          throw new Error(
-            "Did not expect to render an event with not start date"
+      {events
+        .filter((event) => !isCalendarHidden(event.calendarId))
+        .map(function (event, i) {
+          const prevEnd = max(
+            events
+              .slice(0, i)
+              .map((e) => (e.end === "none" ? 0 : e.end))
+              .concat([start === "none" ? 0 : start])
           );
+          const ourStart = event.start;
+          if (ourStart === "none")
+            throw new Error(
+              "Did not expect to render an event with not start date"
+            );
 
-        return (
-          <div key={event.start + event.title}>
-            {event.start !== "none" && (
-              <Interval start={prevEnd} end={event.start} />
-            )}
-            {!isCalendarHidden(event.calendarId) && (
+          return (
+            <div key={event.start + event.title}>
+              {event.start !== "none" && (
+                <Interval start={prevEnd} end={event.start} />
+              )}
               <EventRow event={event} now={now} />
-            )}
-          </div>
-        );
-      })}
+            </div>
+          );
+        })}
     </div>
   );
 }
