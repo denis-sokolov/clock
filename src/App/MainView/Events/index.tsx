@@ -14,13 +14,15 @@ export function Events(props: Props) {
   const { now } = props;
   const { isCalendarHidden } = useHiddenCalendars();
 
-  const events = clean(props.events);
+  const events = clean(props.events).filter(
+    (event) => !isCalendarHidden(event.calendarId)
+  );
   const spacing = props.spacing === true ? {} : props.spacing;
 
   if (!spacing)
     return (
       <div>
-        {clean(events).map((event) => (
+        {events.map((event) => (
           <EventRow event={event} key={event.start + event.title} now={now} />
         ))}
       </div>
@@ -31,30 +33,28 @@ export function Events(props: Props) {
 
   return (
     <div>
-      {events
-        .filter((event) => !isCalendarHidden(event.calendarId))
-        .map(function (event, i) {
-          const prevEnd = max(
-            events
-              .slice(0, i)
-              .map((e) => (e.end === "none" ? 0 : e.end))
-              .concat([start === "none" ? 0 : start])
+      {events.map(function (event, i) {
+        const prevEnd = max(
+          events
+            .slice(0, i)
+            .map((e) => (e.end === "none" ? 0 : e.end))
+            .concat([start === "none" ? 0 : start])
+        );
+        const ourStart = event.start;
+        if (ourStart === "none")
+          throw new Error(
+            "Did not expect to render an event with not start date"
           );
-          const ourStart = event.start;
-          if (ourStart === "none")
-            throw new Error(
-              "Did not expect to render an event with not start date"
-            );
 
-          return (
-            <div key={event.start + event.title}>
-              {event.start !== "none" && (
-                <Interval start={prevEnd} end={event.start} />
-              )}
-              <EventRow event={event} now={now} />
-            </div>
-          );
-        })}
+        return (
+          <div key={event.start + event.title}>
+            {event.start !== "none" && (
+              <Interval start={prevEnd} end={event.start} />
+            )}
+            <EventRow event={event} now={now} />
+          </div>
+        );
+      })}
     </div>
   );
 }
