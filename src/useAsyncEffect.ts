@@ -2,24 +2,22 @@ import { useEffect } from "react";
 import { useCrash } from "@theorem/react";
 
 export function useAsyncEffect(
-  f: (params: { cancelled: boolean }) => Promise<void | (() => void)>,
+  f: (params: { cancelled: () => boolean }) => Promise<void | (() => void)>,
   deps: any[]
 ) {
   const crash = useCrash();
   useEffect(function () {
-    const obj = {
-      cancelled: false,
-    };
+    let cancelled = false;
     let queuedCancellation = () => {};
-    f(obj)
+    f({ cancelled: () => cancelled })
       .then((res) => {
         if (!res) return;
-        if (obj.cancelled) queuedCancellation();
+        if (cancelled) queuedCancellation();
         else queuedCancellation = res;
       })
       .catch(crash);
     return () => {
-      obj.cancelled = true;
+      cancelled = true;
       queuedCancellation();
     };
   }, deps);

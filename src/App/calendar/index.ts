@@ -36,7 +36,7 @@ export function useCalendar(): Calendar {
         setEvents("loading");
         async function fetch() {
           const events = await fetchEvents(window.gapi);
-          if (cancelled) return;
+          if (cancelled()) return;
           setEvents(events);
           setTimeout(fetch, ms("10m"));
         }
