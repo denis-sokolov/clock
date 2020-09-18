@@ -23,7 +23,7 @@ export function Events(props: Props) {
     return (
       <div>
         {events.map((event) => (
-          <EventRow event={event} key={event.start + event.title} now={now} />
+          <EventRow event={event} key={event.id} now={now} />
         ))}
       </div>
     );
@@ -47,7 +47,7 @@ export function Events(props: Props) {
           );
 
         return (
-          <div key={event.start + event.title}>
+          <div key={event.id}>
             {event.start !== "none" && (
               <Interval start={prevEnd} end={event.start} />
             )}
