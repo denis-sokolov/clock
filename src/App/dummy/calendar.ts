@@ -35,6 +35,10 @@ export function dummyCalendar(): Calendar {
       event("Breakfast at Tiffany’s", "10:00-11:00"),
       event("Rest", "11:00-11:20"),
       event("Lunch", "13:00-13:25"),
+      event(
+        "A meeting with somebody involving reading a book with a fantastically long title",
+        "15:00-15:35"
+      ),
       event("Dinner", "19:00-20:30"),
       event("Dinner notes", "19:05-19:05"),
       event("Conversation", "19:35-21:35"),
