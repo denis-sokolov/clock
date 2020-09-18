@@ -4,6 +4,7 @@ export type Event = {
   calendarId: string;
   color: string;
   end: number | "none";
+  id: string;
   start: number | "none";
   title: string;
 };

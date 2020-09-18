@@ -32,6 +32,7 @@ export async function fetchEvents(gapi: typeof window.gapi) {
             return {
               calendarId: calendar.id,
               color: calendar.backgroundColor || "white",
+              id: event.id,
               start,
               end,
               title: event.summary || "",

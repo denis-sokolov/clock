@@ -21,6 +21,7 @@ function event(title: string, time: string): Event {
     calendarId: "1",
     color: "green",
     end,
+    id: title + time,
     start,
     title,
   };
