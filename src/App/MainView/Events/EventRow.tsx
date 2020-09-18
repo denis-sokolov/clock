@@ -17,7 +17,10 @@ export function EventRow(props: Props) {
   const { event, now } = props;
   const [menuVisible, setMenuVisible] = useState(false);
   const { dimCalendar, isCalendarDimmed, undimCalendar } = useDimmedCalendars();
-  const { hideCalendar } = useHiddenCalendars();
+  const { hideCalendar, isCalendarHidden } = useHiddenCalendars();
+
+  if (isCalendarHidden(event.calendarId))
+    throw new Error(`Rendered an event which should have been hidden`);
 
   const startDistance =
     event.start === "none" ? Infinity : Math.abs(now - event.start);
