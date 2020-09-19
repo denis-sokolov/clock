@@ -10,7 +10,7 @@ export function App() {
   useRerenderEvery(ms("10s"));
 
   const now = dummyTime() || Date.now();
-  const calendar = dummyTime() ? dummyCalendar() : useCalendar();
+  const calendar = dummyTime() ? dummyCalendar() : useCalendar(now, ms("5d"));
   const seed = String(Math.round(now / ms("1d")));
 
   return (

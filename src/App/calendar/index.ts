@@ -6,7 +6,10 @@ import { useAsyncEffect } from "src/useAsyncEffect";
 import { initCalendar } from "./init";
 import { fetchEvents } from "./fetch";
 
-export function useCalendar(): Calendar {
+export function useCalendar(
+  fromTimestamp: number,
+  intervalInMs: number
+): Calendar {
   const [initDone, setInitDone] = useState(false);
   const [events, setEvents] = useState<"no-auth" | "loading" | Event[]>(
     "no-auth"
@@ -35,7 +38,11 @@ export function useCalendar(): Calendar {
       if (auth === "logged-in") {
         setEvents("loading");
         async function fetch() {
-          const events = await fetchEvents(window.gapi);
+          const events = await fetchEvents(
+            window.gapi,
+            fromTimestamp,
+            intervalInMs
+          );
           if (cancelled()) return;
           setEvents(events);
           setTimeout(fetch, ms("10m"));
