@@ -1,3 +1,4 @@
+import ms from "ms";
 import React from "react";
 import { clean, Event } from "src/model";
 import { useHiddenCalendars } from "src/userSettings";
@@ -39,6 +40,8 @@ export function Events(props: Props) {
             .slice(0, i)
             .map((e) => {
               if (e.end === "none") return 0;
+              if (e.start !== "none" && e.end - e.start > ms("23h"))
+                return e.start;
               return e.end;
             })
             .concat([start === "none" ? 0 : start])
