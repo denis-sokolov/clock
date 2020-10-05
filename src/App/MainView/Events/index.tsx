@@ -37,7 +37,10 @@ export function Events(props: Props) {
         const prevEnd = max(
           events
             .slice(0, i)
-            .map((e) => (e.end === "none" ? 0 : e.end))
+            .map((e) => {
+              if (e.end === "none") return 0;
+              return e.end;
+            })
             .concat([start === "none" ? 0 : start])
         );
         const ourStart = event.start;
