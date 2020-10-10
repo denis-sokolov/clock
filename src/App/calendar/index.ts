@@ -47,7 +47,7 @@ export function useCalendar(
           setEvents(events);
           setTimeout(fetch, ms("10m"));
         }
-        fetch();
+        await fetch();
       }
     },
     [auth]
