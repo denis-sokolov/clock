@@ -15,8 +15,8 @@ export function Events(props: Props) {
   const { now } = props;
   const { isCalendarHidden } = useHiddenCalendars();
 
-  const events = clean(props.events).filter(
-    (event) => !isCalendarHidden(event.calendarId)
+  const events = clean(
+    props.events.filter((event) => !isCalendarHidden(event.calendarId))
   );
   const spacing = props.spacing === true ? {} : props.spacing;
 
