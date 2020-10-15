@@ -1,6 +1,6 @@
 import ms from "ms";
 import React from "react";
-import { cleanDuplicates, Event } from "src/model";
+import { filterDuplicates, Event } from "src/model";
 import { useHiddenCalendars } from "src/userSettings";
 import { EventRow } from "./EventRow";
 import { Interval } from "./Interval";
@@ -15,7 +15,7 @@ export function Events(props: Props) {
   const { now } = props;
   const { isCalendarHidden } = useHiddenCalendars();
 
-  const events = cleanDuplicates(
+  const events = filterDuplicates(
     props.events.filter((event) => !isCalendarHidden(event.calendarId))
   );
   const spacing = props.spacing === true ? {} : props.spacing;

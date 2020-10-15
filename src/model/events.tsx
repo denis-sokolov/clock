@@ -52,7 +52,7 @@ function similarTitles(a: string, b: string): boolean {
   return clean(a) === clean(b);
 }
 
-export function cleanDuplicates(events: Event[]): Event[] {
+export function filterDuplicates(events: Event[]): Event[] {
   const result: Event[] = [];
   events.forEach(function (ev) {
     const title = (ev.title || "").trim();
