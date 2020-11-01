@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRerender } from "@theorem/react";
 import { Calendar, Event } from "src/model";
 import { useAsyncEffect } from "src/useAsyncEffect";
-import { initCalendar } from "./init";
+import { initAuth, initCalendar } from "./init";
 import { fetchEvents } from "./fetch";
 
 export function useCalendar(
@@ -16,8 +16,16 @@ export function useCalendar(
   );
   const rerender = useRerender();
 
-  const fetchEventsForApp = async () =>
-    await fetchEvents(window.gapi, fromTimestamp, intervalInMs);
+  const fetchEventsWithRetries = async () => {
+    const get = () => fetchEvents(window.gapi, fromTimestamp, intervalInMs);
+    try {
+      // Sometimes the auth token times out
+      return await get();
+    } catch (err) {
+      await initAuth();
+      return await get();
+    }
+  };
 
   const auth = (function () {
     if (!initDone || window.gapi === undefined) return "not-inited";
@@ -41,7 +49,7 @@ export function useCalendar(
       if (auth === "logged-in") {
         setEvents("loading");
         async function fetch() {
-          const events = await fetchEventsForApp();
+          const events = await fetchEventsWithRetries();
           if (cancelled()) return;
           setEvents(events);
           setTimeout(fetch, ms("10m"));
