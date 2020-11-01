@@ -17,9 +17,7 @@ async function gapiLoad(name: string): Promise<void> {
   });
 }
 
-export async function initCalendar() {
-  await addScript("https://apis.google.com/js/api.js");
-  await gapiLoad("client:auth2");
+export async function initAuth() {
   await gapi.client.init({
     apiKey,
     clientId,
@@ -28,4 +26,10 @@ export async function initCalendar() {
     ],
     scope: ["https://www.googleapis.com/auth/calendar.readonly"].join(" "),
   });
+}
+
+export async function initCalendar() {
+  await addScript("https://apis.google.com/js/api.js");
+  await gapiLoad("client:auth2");
+  await initAuth();
 }
