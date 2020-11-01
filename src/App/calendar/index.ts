@@ -16,6 +16,9 @@ export function useCalendar(
   );
   const rerender = useRerender();
 
+  const fetchEventsForApp = async () =>
+    await fetchEvents(window.gapi, fromTimestamp, intervalInMs);
+
   const auth = (function () {
     if (!initDone || window.gapi === undefined) return "not-inited";
     if (gapi.auth2.getAuthInstance().isSignedIn.get()) return "logged-in";
@@ -38,11 +41,7 @@ export function useCalendar(
       if (auth === "logged-in") {
         setEvents("loading");
         async function fetch() {
-          const events = await fetchEvents(
-            window.gapi,
-            fromTimestamp,
-            intervalInMs
-          );
+          const events = await fetchEventsForApp();
           if (cancelled()) return;
           setEvents(events);
           setTimeout(fetch, ms("10m"));
