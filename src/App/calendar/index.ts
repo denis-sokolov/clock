@@ -49,10 +49,15 @@ export function useCalendar(
       if (auth === "logged-in") {
         setEvents("loading");
         async function fetch() {
-          const events = await fetchEventsWithRetries();
-          if (cancelled()) return;
-          setEvents(events);
-          setTimeout(fetch, ms("10m"));
+          try {
+            const events = await fetchEventsWithRetries();
+            if (cancelled()) return;
+            setEvents(events);
+            setTimeout(fetch, ms("10m"));
+          } catch (err) {
+            console.error(err);
+            setTimeout(fetch, ms("1m"));
+          }
         }
         await fetch();
       }
