@@ -1,7 +1,11 @@
 import ms from "ms";
 import { Calendar, Event } from "src/model";
 
-function event(title: string, time: string): Event {
+function event(
+  title: string,
+  time: string,
+  options: { calendarId?: string; color?: string } = {}
+): Event {
   const { start, end } = (function () {
     const mRoot = time.match(/^(.+)-(.+)$/);
     if (!mRoot) throw new Error("Dummy time is invalid");
@@ -18,8 +22,8 @@ function event(title: string, time: string): Event {
     return { start: parse(mRoot[1]), end: parse(mRoot[2]) };
   })();
   return {
-    calendarId: "1",
-    color: "green",
+    calendarId: options.calendarId ?? "1",
+    color: options.color ?? "green",
     end,
     id: title + time,
     start,
@@ -35,6 +39,10 @@ export function dummyCalendar(): Calendar {
       event("Bring your child to work day", "yesterday-none"),
       event("Breakfast at Tiffany’s", "10:00-11:00"),
       event("Rest", "11:00-11:20"),
+      event("Side-event", "11:00-11:50", {
+        calendarId: "sideways",
+        color: "blue",
+      }),
       event("Lunch", "13:00-13:25"),
       event(
         "A meeting with somebody involving reading a book with a fantastically long title",
