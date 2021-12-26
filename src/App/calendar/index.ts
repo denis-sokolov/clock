@@ -48,11 +48,18 @@ export function useCalendar(
 
       if (auth === "logged-in") {
         setEvents("loading");
+        let fullReloadTimer: ReturnType<typeof setTimeout>;
         async function fetch() {
           try {
             const events = await fetchEventsWithRetries();
             if (cancelled()) return;
             setEvents(events);
+
+            clearTimeout(fullReloadTimer);
+            fullReloadTimer = setTimeout(() => {
+              fullReloadTimer = setTimeout(() => location.reload(), ms("12m"));
+            }, ms("20m"));
+
             setTimeout(fetch, ms("10m"));
           } catch (err) {
             console.error(err);
