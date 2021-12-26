@@ -10,8 +10,8 @@ export async function fetchEvents(
 
   const allEvents: Event[] = (
     await Promise.all(
-      calendars.map(async (calendar) =>
-        (
+      calendars.map(async (calendar) => {
+        return (
           await gapi.client.calendar.events.list({
             calendarId: calendar.id,
             timeMin: new Date(fromTimestamp).toISOString(),
@@ -20,29 +20,39 @@ export async function fetchEvents(
             singleEvents: true,
             orderBy: "startTime",
           })
-        ).result.items.map(
-          (event): Event => {
-            const start = event.start.dateTime
-              ? Date.parse(event.start.dateTime)
-              : event.start.date
-              ? Date.parse(`${event.start.date}T00:00:00`)
-              : "none";
-            const end = event.end.dateTime
-              ? Date.parse(event.end.dateTime)
-              : event.end.date
-              ? Date.parse(`${event.end.date}T23:59:59`)
-              : "none";
-            return {
-              calendarId: calendar.id,
-              color: calendar.backgroundColor || "white",
-              id: event.id,
-              start,
-              end,
-              title: event.summary || "",
-            };
-          }
-        )
-      )
+        ).result.items
+          .filter((event) => {
+            const myEmail = calendar.id;
+            const meAttendee = event.attendees?.find(
+              (attendee) => attendee.email === myEmail
+            );
+            if (!meAttendee) return true;
+            if (meAttendee.responseStatus === "declined") return false;
+            return true;
+          })
+          .map(
+            (event): Event => {
+              const start = event.start.dateTime
+                ? Date.parse(event.start.dateTime)
+                : event.start.date
+                ? Date.parse(`${event.start.date}T00:00:00`)
+                : "none";
+              const end = event.end.dateTime
+                ? Date.parse(event.end.dateTime)
+                : event.end.date
+                ? Date.parse(`${event.end.date}T23:59:59`)
+                : "none";
+              return {
+                calendarId: calendar.id,
+                color: calendar.backgroundColor || "white",
+                id: event.id,
+                start,
+                end,
+                title: event.summary || "",
+              };
+            }
+          );
+      })
     )
   ).flat();
 
